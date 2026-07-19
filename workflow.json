@@ -1,0 +1,85 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "cronExpression": "0 17 * * 5"
+      },
+      "name": "Cron",
+      "type": "ncron",
+      "typeVersion": 1,
+      "position": [100, 100]
+    },
+    {
+      "parameters": {
+        "resource": "repos",
+        "repository": "=githubRepo",
+        "since": "=moment().subtract(7, 'days').format()",
+        "until": "=moment().format()"
+      },
+      "name": "GitHub API",
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1,
+      "position": [300, 100]
+    },
+    {
+      "parameters": {
+        "url": "https://api.claude.ai/v1/generate",
+        "body": {
+          "prompt": "=`Summarize the GitHub activity for the past week: ${JSON.stringify(items[0].json)}\n\nSummary: `",
+          "model": "claude-sonnet-4-20250514",
+          "max_tokens": 500
+        }
+      },
+      "name": "Claude API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [500, 100]
+    },
+    {
+      "parameters": {
+        "to": "=emailDestination",
+        "subject": "Weekly GitHub Activity Summary",
+        "text": "=`Summary: ${items[0].json.response.choices[0].text}`"
+      },
+      "name": "Send Email",
+      "type": "n8n-nodes-base.email",
+      "typeVersion": 1,
+      "position": [700, 100]
+    }
+  ],
+  "connections": {
+    "Cron": {
+      "main": [
+        [
+          {
+            "node": "GitHub API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GitHub API": {
+      "main": [
+        [
+          {
+            "node": "Claude API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Claude API": {
+      "main": [
+        [
+          {
+            "node": "Send Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}
