@@ -1,0 +1,56 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "cronExpression": "0 17 * * 5"
+      },
+      "name": "Cron",
+      "type": "ncron",
+      "typeVersion": 1,
+      "position": [100, 100]
+    },
+    {
+      "parameters": {
+        "repository": "={{$node[\"GitHub Repo Config\"].json.repository}}",
+        "since": "={{$now.format('YYYY-MM-DD')}}T00:00:00Z",
+        "until": "={{$now.add({days: -7}).format('YYYY-MM-DD')}}T23:59:59Z"
+      },
+      "name": "GitHub Activity",
+      "type": "github",
+      "typeVersion": 1,
+      "position": [300, 100]
+    },
+    {
+      "parameters": {
+        "model": "claude-sonnet-4-20250514",
+        "prompt": "Generate a weekly narrative summary of the GitHub repository activity. Here are the details: \n\nCommits: {{ $json[\"commits\"] }}\nClosed Issues: {{ $json[\"issues\"] }}\nMerged PRs: {{ $json[\"prs\"] }}"
+      },
+      "name": "Claude Summary",
+      "type": "anthropic",
+      "typeVersion": 1,
+      "position": [500, 100]
+    },
+    {
+      "parameters": {
+        "toEmail": "={{$node[\"Email Config\"].json.toEmail}}",
+        "subject": "Weekly GitHub Repository Summary",
+        "text": "Here is the weekly summary for the GitHub repository: \n\n{{ $json.summary }}"
+      },
+      "name": "Send Email",
+      "type": "email",
+      "typeVersion": 1,
+      "position": [700, 100]
+    }
+  ],
+  "connections": {
+    "Cron": {
+      "main": ["GitHub Activity"]
+    },
+    "GitHub Activity": {
+      "main": ["Claude Summary"]
+    },
+    "Claude Summary": {
+      "main": ["Send Email"]
+    }
+  }
+}
