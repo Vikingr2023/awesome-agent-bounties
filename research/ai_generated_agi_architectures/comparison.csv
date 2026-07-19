@@ -1,0 +1,9 @@
+Model,Architecture_Type,Key_Components,Scalability,Energy_Efficiency,Other_Notes
+ChatGPT,Transformer,Self-Attention,High,Medium,Notes
+Claude,Transformer,Self-Attention,High,Medium,Notes
+Gemini,Transformer,Self-Attention,High,Medium,Notes
+Grok,Transformer,Self-Attention,High,Medium,Notes
+DeepSeek,Transformer,Self-Attention,High,Medium,Notes
+Qwen,Transformer,Self-Attention,High,Medium,Notes
+Llama,Transformer,Self-Attention,High,Medium,Notes
+Mistral,Transformer,Self-Attention,High,Medium,Notes
