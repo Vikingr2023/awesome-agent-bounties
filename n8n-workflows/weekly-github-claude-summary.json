@@ -1,0 +1,258 @@
+{
+  "name": "Weekly GitHub Repo Summary with Claude",
+  "nodes": [
+    {
+      "parameters": {
+        "triggerTimes": {
+          "item": [
+            {
+              "hour": 17,
+              "minute": 0,
+              "weekDay": [
+                "friday"
+              ]
+            }
+          ]
+        }
+      },
+      "name": "Weekly Trigger",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [
+        250,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "personalAccessToken",
+        "resource": "issue",
+        "operation": "getAll",
+        "repository": "claude-builders-bounty",
+        "owner": "claude-builders-bounty",
+        "state": "closed",
+        "additionalFields": {
+          "since": "={{$moment().subtract(7, 'days').toISOString()}}",
+          "labels": "",
+          "perPage": 100
+        }
+      },
+      "name": "Closed Issues",
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1,
+      "position": [
+        650,
+        100
+      ],
+      "credentials": {
+        "githubApi": "GitHub Personal Access Token"
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "personalAccessToken",
+        "resource": "pullRequest",
+        "operation": "getAll",
+        "repository": "claude-builders-bounty",
+        "owner": "claude-builders-bounty",
+        "state": "closed",
+        "additionalFields": {
+          "since": "={{$moment().subtract(7, 'days').toISOString()}}",
+          "perPage": 100
+        }
+      },
+      "name": "Merged PRs",
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1,
+      "position": [
+        650,
+        300
+      ],
+      "credentials": {
+        "githubApi": "GitHub Personal Access Token"
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "personalAccessToken",
+        "resource": "commit",
+        "operation": "getAll",
+        "repository": "claude-builders-bounty",
+        "owner": "claude-builders-bounty",
+        "additionalFields": {
+          "since": "={{$moment().subtract(7, 'days').toISOString()}}",
+          "perPage": 100
+        }
+      },
+      "name": "Commits",
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1,
+      "position": [
+        650,
+        500
+      ],
+      "credentials": {
+        "githubApi": "GitHub Personal Access Token"
+      }
+    },
+    {
+      "parameters": {
+        "functionCode": "const issues = items.find(item => item.name === 'Closed Issues').json;\nconst prs = items.find(item => item.name === 'Merged PRs').json;\nconst commits = items.find(item => item.name === 'Commits').json;\n\nconst summary = `Weekly summary for claude-builders-bounty/claude-builders-bounty:\n\nClosed Issues (${issues.length}):\\n${issues.map(i => `- #${i.number} ${i.title}`).join('\\n')}\n\nMerged PRs (${prs.length}):\\n${prs.map(p => `- #${p.number} ${p.title}`).join('\\n')}\n\nCommits (${commits.length}):\\n${commits.map(c => `- ${c.sha.substring(0,7)} ${c.commit.message.split('\\n')[0]}`).join('\\n')}`;\n\nreturn [{ json: { summary } }];"
+      },
+      "name": "Generate Summary",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        950,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "url": "https://api.anthropic.com/v1/complete",
+        "options": {},
+        "bodyParametersUi": {
+          "parameter": [
+            {
+              "name": "model",
+              "value": "claude-sonnet-4-20250514"
+            },
+            {
+              "name": "prompt",
+              "value": "Human: Summarize the following GitHub activity in a concise narrative:\n\n{{$json[\"summary\"]}}\n\nAssistant:"
+            },
+            {
+              "name": "max_tokens_to_sample",
+              "value": "500"
+            },
+            {
+              "name": "temperature",
+              "value": "0.3"
+            }
+          ]
+        },
+        "headerParametersUi": {
+          "parameter": [
+            {
+              "name": "x-api-key",
+              "value": "={{$credentials.claudeApi.apiKey}}"
+            }
+          ]
+        }
+      },
+      "name": "Claude Summary",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        1250,
+        300
+      ],
+      "credentials": {
+        "claudeApi": {
+          "id": "1",
+          "name": "Claude API Key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "n8n@31day.cloud",
+        "toEmail": "your-email@example.com",
+        "subject": "Weekly GitHub Repo Summary",
+        "text": "={{$json[\"completion\"]}}"
+      },
+      "name": "Send Email",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 1,
+      "position": [
+        1550,
+        300
+      ],
+      "credentials": {
+        "smtp": "SMTP Credentials"
+      }
+    }
+  ],
+  "connections": {
+    "Weekly Trigger": {
+      "main": [
+        [
+          {
+            "node": "Closed Issues",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merged PRs",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Commits",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Closed Issues": {
+      "main": [
+        [
+          {
+            "node": "Generate Summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merged PRs": {
+      "main": [
+        [
+          {
+            "node": "Generate Summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Commits": {
+      "main": [
+        [
+          {
+            "node": "Generate Summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Summary": {
+      "main": [
+        [
+          {
+            "node": "Claude Summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Claude Summary": {
+      "main": [
+        [
+          {
+            "node": "Send Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "id": "1"
+}
