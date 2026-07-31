@@ -1,0 +1,3 @@
+# Gemini AGI Architecture Proposal
+
+Gemini proposes a scalable, modular AGI architecture with distinct subsystems for perception, memory, reasoning, and planning. It emphasizes hierarchical control and dynamic resource allocation. Learning is multi-modal and multi-paradigm, combining deep learning, symbolic AI, and evolutionary algorithms.

@@ -1,0 +1,3 @@
+# DeepSeek AGI Architecture Proposal
+
+DeepSeek proposes an AGI architecture optimized for real-world use cases such as robotics and autonomous systems. It features sensor fusion modules, real-time decision making, and adaptive learning. The architecture supports distributed processing and edge computing.

@@ -1,0 +1,10 @@
+System,Key Components,Learning Paradigms,Memory Model,Control Structure,Special Features
+ChatGPT,"Modular perception, memory, reasoning, action; symbolic + neural","Reinforcement learning; continual and meta-learning","Short-term working + long-term episodic","Hierarchical control","Integration of symbolic reasoning and meta-learning"
+Claude,"Layered perception, cognition, action; probabilistic + neural-symbolic","Supervised, unsupervised, reinforcement","Transparent memory","Multi-level safety and alignment modules","Text-based diagram representation"
+Gemini,"Scalable modular subsystems; perception, memory, reasoning, planning","Multi-modal multi-paradigm: deep learning, symbolic AI, evolutionary","Hierarchical control","Dynamic resource allocation","Emphasis on scalability and modularity"
+Grok,"Core ethical reasoning; safety and alignment focus","Reinforcement + rule-based","Transparent and auditable memory","Continuous monitoring and fail-safe","Ethical reasoning and auditability"
+DeepSeek,"Sensor fusion; real-time decision making; adaptive learning","Distributed processing and edge computing","Optimized for robotics and autonomous systems","",""
+Qwen,"Hybrid neural-symbolic; explainability and modularity","Meta-learning and continual learning","Modular design","Explainability focus","Comparison with existing architectures"
+Llama,"Open-source modular perception, reasoning, action","Community-driven development","Extensibility and interoperability","Transparency focus",""
+Mistral,"Lightweight modules; optimized data flow; parallel processing","Rapid adaptation; low-latency inference","Efficiency and speed focused","Parallel processing capabilities","Lightweight and optimized design"
+Perplexity,"Symbolic and sub-symbolic integration; multi-agent collaboration","Advanced memory and reasoning","Multi-agent control","References to existing research","Comprehensive and collaborative"

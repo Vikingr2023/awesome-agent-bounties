@@ -1,0 +1,3 @@
+# Perplexity AGI Architecture Proposal
+
+Perplexity provides a comprehensive AGI architecture with references to existing research. It integrates symbolic and sub-symbolic methods, supports multi-agent collaboration, and includes advanced memory and reasoning modules.
