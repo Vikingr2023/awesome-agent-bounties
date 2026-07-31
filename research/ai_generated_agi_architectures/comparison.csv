@@ -1,0 +1,10 @@
+AI System,Key Components,Learning Mechanisms,Architecture Style,Scalability,Modularity,Notes
+ChatGPT/OpenAI,Perception, Memory, Reasoning, Transformer-based, Reinforcement Learning, High, High, Well-documented proposal
+Claude,Perception, Memory, Reasoning, Hybrid Neural-Symbolic, Reinforcement Learning, High, Medium, Emphasizes symbolic reasoning
+Gemini,Perception, Memory, Reasoning, Transformer-based, Supervised Learning, Medium, High, Focus on efficiency
+Grok,Perception, Memory, Reasoning, Transformer-based, Reinforcement Learning, High, High, Includes textual diagrams
+DeepSeek,Perception, Memory, Reasoning, Neural Network, Supervised Learning, Medium, Medium, Early-stage proposal
+Qwen,Perception, Memory, Reasoning, Modular Neural Network, Reinforcement Learning, High, Very High, Emphasizes modularity
+Llama-based,Perception, Memory, Reasoning, Transformer-based, Supervised Learning, Medium, Medium, Open-source models
+Mistral-based,Perception, Memory, Reasoning, Transformer-based, Reinforcement Learning, High, Medium, Recent architecture
+Perplexity,Perception, Memory, Reasoning, Hybrid Neural-Symbolic, Supervised Learning, Medium, Medium, Focus on scalability
