@@ -1,0 +1,3 @@
+# Claude AGI Architecture Proposal
+
+Claude's proposal emphasizes a layered architecture with perception, cognition, and action layers. It integrates probabilistic reasoning with neural-symbolic methods. The architecture includes a text-based diagram representation of data flow between modules. Learning mechanisms include supervised, unsupervised, and reinforcement learning. Safety and alignment modules are integrated at multiple levels.

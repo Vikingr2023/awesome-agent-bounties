@@ -1,0 +1,3 @@
+# Llama-based AGI Architecture Proposal
+
+The Llama-based system proposes an open-source AGI architecture focusing on transparency and community-driven development. It includes modular components for perception, reasoning, and action, with an emphasis on extensibility and interoperability.

@@ -1,0 +1,3 @@
+# Qwen AGI Architecture Proposal
+
+Qwen's architecture compares existing AGI designs and proposes a hybrid model combining neural networks with symbolic reasoning. It emphasizes explainability and modularity. Learning mechanisms include meta-learning and continual learning.
