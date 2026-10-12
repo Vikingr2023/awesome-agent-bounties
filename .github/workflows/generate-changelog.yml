@@ -1,0 +1,45 @@
+name: Generate Changelog
+
+on:
+  workflow_dispatch: # Allows manual triggering
+  push:
+    branches:
+      - main # Or your default branch
+
+jobs:
+  generate-changelog:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch all history for tags and commits
+
+      - name: Make changelog script executable
+        run: chmod +x changelog.sh
+
+      - name: Generate CHANGELOG.md
+        run: ./changelog.sh
+
+      - name: Create Pull Request if CHANGELOG.md changed
+        id: create_pr
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "docs: Update CHANGELOG.md"
+          committer: GitHub <noreply@github.com>
+          author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+          branch: chore/update-changelog
+          delete-branch: true
+          title: "docs: Update CHANGELOG.md"
+          body: |
+            Automated CHANGELOG.md update based on recent commits.
+          labels: documentation, automated
+          assignees: ${{ github.actor }}
+          reviewers: ${{ github.actor }}
+          add-paths: CHANGELOG.md
+
+      - name: Check for PR creation
+        if: steps.create_pr.outputs.pull-request-number
+        run: |
+          echo "Pull Request created: ${{ steps.create_pr.outputs.pull-request-url }}"
